@@ -6,20 +6,20 @@
 	import 'prismjs/components/prism-python';
 	import 'prismjs/themes/prism-tomorrow.css';
 	import { onMount, afterUpdate } from 'svelte';
-    import { tick } from 'svelte';
+	import { tick } from 'svelte';
 
-    async function highlight() {
-        if (!browser) return;
-        await tick();
+	async function highlight() {
+		if (!browser) return;
+		await tick();
 
-        document.querySelectorAll('pre code:not(.prism-done)').forEach((el) => {
-            Prism.highlightElement(el);
-            el.classList.add('prism-done');
-        });
-    }
+		document.querySelectorAll('pre code:not(.prism-done)').forEach((el) => {
+			Prism.highlightElement(el);
+			el.classList.add('prism-done');
+		});
+	}
 
-    $: filtered, highlight();
-    $: expandedId, highlight();
+	$: (filtered, highlight());
+	$: (expandedId, highlight());
 
 	onMount(highlight);
 	afterUpdate(highlight);
@@ -201,10 +201,10 @@
 				<button
 					class="scroll-arrow left"
 					on:mousedown={() => startScroll('left')}
-                    on:mouseup={stopScroll}
-                    on:mouseleave={stopScroll}
-                    on:touchstart|preventDefault={() => startScroll('left')}
-                    on:touchend={stopScroll}
+					on:mouseup={stopScroll}
+					on:mouseleave={stopScroll}
+					on:touchstart|preventDefault={() => startScroll('left')}
+					on:touchend={stopScroll}
 				>
 					‹
 				</button>
@@ -234,10 +234,10 @@
 				<button
 					class="scroll-arrow right"
 					on:mousedown={() => startScroll('right')}
-                    on:mouseup={stopScroll}
-                    on:mouseleave={stopScroll}
-                    on:touchstart|preventDefault={() => startScroll('right')}
-                    on:touchend={stopScroll}
+					on:mouseup={stopScroll}
+					on:mouseleave={stopScroll}
+					on:touchstart|preventDefault={() => startScroll('right')}
+					on:touchend={stopScroll}
 				>
 					›
 				</button>
@@ -343,7 +343,8 @@
 
 									<div class="code-wrap">
 										<span class="code-label">Príklad</span>
-										<pre class="code-block"><code class="language-python">{entry.example}</code></pre>
+										<pre class="code-block"><code class="language-python">{entry.example}</code
+											></pre>
 									</div>
 								</article>
 							{/each}
@@ -601,6 +602,10 @@
 		grid-template-columns: auto 1fr auto;
 		align-items: center;
 		gap: 8px;
+
+		@media (max-width: #{$bp-md}) {
+			grid-template-columns: 1fr; // remove the arrow columns
+		}
 	}
 
 	/* scroll area stays unchanged visually */
@@ -648,6 +653,10 @@
 
 		&.right {
 			right: 0;
+		}
+
+		@media (max-width: #{$bp-md}) {
+			display: none;
 		}
 	}
 
@@ -909,7 +918,7 @@
 			border-color $transition-fast,
 			box-shadow $transition-fast;
 		border-left: 4px solid var(--cat-accent);
-        min-width: 0;       // ← add this
+		min-width: 0; // ← add this
 
 		&:hover {
 			box-shadow: $shadow-md;
@@ -983,10 +992,10 @@
 	// CODE BLOCKS
 	// ──────────────────────────────────────────────────────
 	.code-wrap {
-        position: relative;
-        min-width: 0;
-        border-radius: $radius-md;
-    }
+		position: relative;
+		min-width: 0;
+		border-radius: $radius-md;
+	}
 
 	.code-label {
 		display: inline-block;
@@ -1009,8 +1018,7 @@
 		line-height: 1.7;
 		margin: 0;
 		white-space: pre;
-        width: 100%;        // ← add this
-        
+		width: 100%; // ← add this
 
 		// Simple syntax highlighting via CSS
 		code {
