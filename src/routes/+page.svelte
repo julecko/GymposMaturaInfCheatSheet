@@ -361,8 +361,8 @@
   ═══════════════════════════════════════════════════ -->
 	<footer class="footer">
 		<div class="container">
-			<p>🐍 Python Maturita Cheatsheet · {new Date().getFullYear()}</p>
-			<p class="footer-sub">Vytvorené pre maturitantov gymnázia · Syntax: Python 3</p>
+			<p>Python Maturita Cheatsheet · {new Date().getFullYear()}</p>
+			<p class="footer-sub">Vytvoril pre maturitantov gymnázia JK</p>
 		</div>
 	</footer>
 </div>
