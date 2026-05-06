@@ -66,4 +66,3 @@ Uprav `src/lib/styles/_variables.scss`.
 - 🏷️ **Kategórie** — filter podľa témy
 - 🌙 **Svetlá / tmavá téma** — uložená v localStorage
 - 📱 **Responzívny** — funguje na mobile aj PC
-- 
