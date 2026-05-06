@@ -201,8 +201,10 @@
 				<button
 					class="scroll-arrow left"
 					on:mousedown={() => startScroll('left')}
-					on:mouseup={stopScroll}
-					on:mouseleave={stopScroll}
+                    on:mouseup={stopScroll}
+                    on:mouseleave={stopScroll}
+                    on:touchstart|preventDefault={() => startScroll('left')}
+                    on:touchend={stopScroll}
 				>
 					‹
 				</button>
@@ -232,8 +234,10 @@
 				<button
 					class="scroll-arrow right"
 					on:mousedown={() => startScroll('right')}
-					on:mouseup={stopScroll}
-					on:mouseleave={stopScroll}
+                    on:mouseup={stopScroll}
+                    on:mouseleave={stopScroll}
+                    on:touchstart|preventDefault={() => startScroll('right')}
+                    on:touchend={stopScroll}
 				>
 					›
 				</button>
@@ -885,7 +889,7 @@
 
 	.detail-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(min(440px, 100%), 1fr));
 		gap: $space-5;
 
 		@media (max-width: #{$bp-md}) {
@@ -905,6 +909,7 @@
 			border-color $transition-fast,
 			box-shadow $transition-fast;
 		border-left: 4px solid var(--cat-accent);
+        min-width: 0;       // ← add this
 
 		&:hover {
 			box-shadow: $shadow-md;
@@ -978,8 +983,10 @@
 	// CODE BLOCKS
 	// ──────────────────────────────────────────────────────
 	.code-wrap {
-		position: relative;
-	}
+        position: relative;
+        min-width: 0;
+        border-radius: $radius-md;
+    }
 
 	.code-label {
 		display: inline-block;
@@ -1002,6 +1009,8 @@
 		line-height: 1.7;
 		margin: 0;
 		white-space: pre;
+        width: 100%;        // ← add this
+        
 
 		// Simple syntax highlighting via CSS
 		code {
