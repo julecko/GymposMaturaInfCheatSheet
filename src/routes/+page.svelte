@@ -506,7 +506,7 @@
 		}
 
 		@media (max-width: #{$bp-md}) {
-			margin-left: 0;
+			margin-left: auto;
 		}
 	}
 
