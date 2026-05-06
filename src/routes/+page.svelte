@@ -362,7 +362,7 @@
 	<footer class="footer">
 		<div class="container">
 			<p>Python Maturita Cheatsheet · {new Date().getFullYear()}</p>
-			<p class="footer-sub">Vytvoril pre maturitantov gymnázia JK</p>
+			<p class="footer-sub">Vytvoril pre maturitantov gymnázia Julo</p>
 		</div>
 	</footer>
 </div>
