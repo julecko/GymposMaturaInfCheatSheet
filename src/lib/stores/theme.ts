@@ -3,35 +3,20 @@ import { browser } from '$app/environment';
 
 type Theme = 'light' | 'dark';
 
+const initial: Theme =
+  browser && localStorage.getItem('theme') === 'light'
+    ? 'light'
+    : 'dark';
+
 function createThemeStore() {
-  const stored = browser ? (localStorage.getItem('theme') as Theme) : null;
-  const initial: Theme = stored ?? 'dark';
-
   const { subscribe, set, update } = writable<Theme>(initial);
-
-  if (browser) {
-    document.documentElement.setAttribute('data-theme', initial);
-  }
 
   return {
     subscribe,
     toggle() {
-      update(t => {
-        const next: Theme = t === 'dark' ? 'light' : 'dark';
-        if (browser) {
-          localStorage.setItem('theme', next);
-          document.documentElement.setAttribute('data-theme', next);
-        }
-        return next;
-      });
+      update(t => (t === 'dark' ? 'light' : 'dark'));
     },
-    set(t: Theme) {
-      set(t);
-      if (browser) {
-        localStorage.setItem('theme', t);
-        document.documentElement.setAttribute('data-theme', t);
-      }
-    }
+    set
   };
 }
 

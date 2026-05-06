@@ -4,7 +4,7 @@
 // ============================================================
 // CSS CUSTOM PROPERTIES (theme-aware)
 // ============================================================
-:root {
+html {
   // Light theme defaults
   --bg: #{$light-bg};
   --surface: #{$light-surface};
@@ -30,7 +30,7 @@
   --shadow-md: #{$shadow-md};
 }
 
-[data-theme='dark'] {
+html[data-theme='dark'] {
   --bg: #{$dark-bg};
   --surface: #{$dark-surface};
   --surface-2: #{$dark-surface-2};
