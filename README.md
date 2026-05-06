@@ -1,94 +1,69 @@
-# SvelteTemplate
+# 🐍 Python Maturita Cheatsheet
 
-A minimal **SvelteKit** template project using **Vite**, **SCSS**, **TypeScript**, **Prettier**, and **ESLint**.
+SvelteKit + SCSS cheatsheet pre maturantov gymnázia — Python.
 
----
-
-## Features
-
-* **SvelteKit**: Framework for building modern web apps.
-* **Vite**: Fast bundler & dev server.
-* **TypeScript**: Type safety for JS/TS code.
-* **SCSS**: Flexible styling with variables and mixins.
-* **Prettier**: Automatic code formatting.
-* **ESLint**: Code linting for best practices.
-* **Path aliases**: `$lib`, `@components`, `@styles`, `@utils` for clean imports.
-
----
-
-## Project Structure
-
-```
-src/
- ├─ lib/
- │   ├─ components/       # Reusable Svelte components
- │   ├─ styles/           # Global SCSS, variables, mixins
- │   ├─ utils/            # Helper functions
- │   └─ assets/           # Images, icons, etc.
- ├─ routes/               # SvelteKit pages and layouts
- └─ app.html              # HTML template
-```
-
----
-
-## Setup
-
-1. Install dependencies:
+## Inštalácia
 
 ```bash
+# Nainštaluj závislosti (ak ešte nie sú)
 npm install
-```
 
-2. Run dev server:
+# Pridaj SCSS preprocessor (ak chýba)
+npm install -D sass
 
-```bash
+# Spusti dev server
 npm run dev
 ```
 
-3. Build for production:
+## Štruktúra projektu
 
-```bash
-npm run build
+```
+src/
+├── lib/
+│   ├── data/
+│   │   └── cheatsheet.ts   ← ✏️  EDITUJ TOTO — všetky témy, kategórie a príklady
+│   ├── stores/
+│   │   └── theme.ts         ← prepínanie svetlej/tmavej témy
+│   └── styles/
+│       ├── _variables.scss  ← ✏️  farby, fonty, spacing
+│       └── global.scss      ← base štýly, CSS custom properties
+└── routes/
+    ├── +layout.svelte       ← koreňový layout
+    └── +page.svelte         ← hlavná stránka (UI logika + lokálne SCSS)
 ```
 
-4. Preview production build:
+## Ako upravovať obsah
 
-```bash
-npm run preview
+### Pridanie novej kategórie
+V `src/lib/data/cheatsheet.ts` do poľa `categories` pridaj:
+```ts
+{ key: 'nova', label: 'Nová kategória', icon: '🆕', color: 'accent-green' }
 ```
 
----
-
-## Path Aliases
-
-Configured in `svelte.config.js` and `tsconfig.json`:
-
-| Alias         | Path                 |
-| ------------- | -------------------- |
-| `$lib`        | `src/lib`            |
-| `@components` | `src/lib/components` |
-| `@styles`     | `src/lib/styles`     |
-| `@utils`      | `src/lib/utils`      |
-
----
-
-## Code Quality
-
-* **Prettier**: Auto-formats code. Run with:
-
-```bash
-npx prettier --write .
+### Pridanie nového príkazu
+Do poľa `entries` pridaj objekt:
+```ts
+{
+  id: 'unikatne-id',
+  name: 'Názov príkazu',
+  syntax: 'syntaxový hint',
+  brief: 'Krátky popis jednou vetou.',
+  description: 'Dlhší popis čo príkaz robí, kedy ho použiť atď.',
+  example: `# ukážkový kód
+print("ahoj")`,
+  category: 'basics',   // musí zodpovedať key z categories
+  tags: ['voliteľné', 'tagy'],
+}
 ```
 
-* **ESLint**: Lints code. Run with:
+### Zmena farieb / fontov
+Uprav `src/lib/styles/_variables.scss`.
 
-```bash
-npx eslint src --fix
-```
-
----
-
-## TypeScript Config
-
-* Extends SvelteKit’s auto-generated TS config.
-* Path aliases defined for `$lib`, `@components`, `@styles`, `@utils`.
+## Funkcie
+- ⚡ **Rýchly prehľad** — klikateľné karty so skrytým rozbalením
+- 📚 **Detailný prehľad** — všetky popisy a príklady naraz
+- 🔍 **Vyhľadávanie** — filtruje podľa názvu, syntaxe, popisu
+- 🏷️ **Kategórie** — filter podľa témy
+- 🌙 **Svetlá / tmavá téma** — uložená v localStorage
+- 📱 **Responzívny** — funguje na mobile aj PC
+- 

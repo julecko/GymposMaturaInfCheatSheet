@@ -1,10 +1,149 @@
 @use 'variables' as *;
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* global styles */
-:global(body) {
-  font-family: system-ui, sans-serif;
-  color: $font-color;
+// ============================================================
+// CSS CUSTOM PROPERTIES (theme-aware)
+// ============================================================
+:root {
+  // Light theme defaults
+  --bg: #{$light-bg};
+  --surface: #{$light-surface};
+  --surface-2: #{$light-surface-2};
+  --border: #{$light-border};
+  --text: #{$light-text};
+  --text-muted: #{$light-text-muted};
+  --code-bg: #{$light-code-bg};
+  --code-text: #{$light-code-text};
+
+  // Accent colors
+  --accent-blue: #{$python-blue};
+  --accent-yellow: #{$python-yellow};
+  --accent-green: #{$python-green};
+  --accent-red: #{$python-red};
+  --accent-purple: #{$python-purple};
+  --accent-cyan: #{$python-cyan};
+
+  // Semantic
+  --tag-bg: #{rgba($python-blue, 0.1)};
+  --tag-text: #{$python-blue};
+  --shadow-sm: #{$shadow-sm};
+  --shadow-md: #{$shadow-md};
+}
+
+[data-theme='dark'] {
+  --bg: #{$dark-bg};
+  --surface: #{$dark-surface};
+  --surface-2: #{$dark-surface-2};
+  --border: #{$dark-border};
+  --text: #{$dark-text};
+  --text-muted: #{$dark-text-muted};
+  --code-bg: #{$dark-code-bg};
+  --code-text: #{$dark-code-text};
+  --tag-bg: #{rgba($python-blue, 0.2)};
+  --tag-text: #93c5fd;
+}
+
+// ============================================================
+// RESET & BASE
+// ============================================================
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background: #f5f5f5;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: $font-body;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  transition: background $transition-mid, color $transition-mid;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+// ============================================================
+// TYPOGRAPHY
+// ============================================================
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-display;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+code, pre, kbd {
+  font-family: $font-mono;
+}
+
+a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+// ============================================================
+// HIGHLIGHT.JS THEME OVERRIDES
+// ============================================================
+
+// We load highlight.js base styles globally and override colors
+// so they match our dark code-bg on both themes
+.hljs {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  padding: 0 !important;
+}
+
+// Python token colors (Catppuccin-inspired, works on dark bg)
+.hljs-keyword        { color: #cba6f7; font-weight: 600; } // purple — def, for, if
+.hljs-built_in       { color: #89b4fa; }                   // blue — print, range, len
+.hljs-string         { color: #a6e3a1; }                   // green
+.hljs-number         { color: #fab387; }                   // peach
+.hljs-comment        { color: #6c7086; font-style: italic; }
+.hljs-title          { color: #89dceb; }                   // function name
+.hljs-params         { color: #cdd6f4; }
+.hljs-operator       { color: #89dceb; }
+.hljs-punctuation    { color: #cdd6f4; }
+.hljs-literal        { color: #fab387; }                   // True False None
+.hljs-variable       { color: #cdd6f4; }
+.hljs-attr           { color: #f38ba8; }
+.hljs-class .hljs-title { color: #f9e2af; }
+
+// ============================================================
+// SCROLLBAR
+// ============================================================
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: $radius-pill;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+// ============================================================
+// UTILITY CLASSES
+// ============================================================
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $space-6;
+
+  @media (max-width: #{$bp-sm}) {
+    padding: 0 $space-4;
+  }
 }
