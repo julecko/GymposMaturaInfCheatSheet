@@ -4,7 +4,7 @@
     import { theme } from '$lib/stores/theme';
     import { browser } from '$app/environment';
     import { onMount } from 'svelte';
-
+    export const prerender = true;
 
     onMount(() => {
         // Apply theme on mount to avoid flash
