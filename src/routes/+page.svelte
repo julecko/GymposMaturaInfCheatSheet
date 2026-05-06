@@ -3,6 +3,7 @@
 	import { entries, categories, type Entry, type Category } from '$lib/data/cheatsheet';
 	import { theme } from '$lib/stores/theme';
 	import Prism from 'prismjs';
+	import SnakeIcon from '$lib/assets/favicon.svg?raw';
 	import 'prismjs/components/prism-python';
 	import 'prismjs/themes/prism-tomorrow.css';
 	import { onMount, afterUpdate } from 'svelte';
@@ -127,7 +128,7 @@
 	<header class="header">
 		<div class="header-inner container">
 			<div class="logo">
-				<span class="logo-icon">🐍</span>
+				<div class="logo-icon">{@html SnakeIcon}</div>
 				<div class="logo-text">
 					<span class="logo-title">Python</span>
 					<span class="logo-sub">Maturita Cheatsheet</span>
@@ -368,6 +369,18 @@
 
 <style lang="scss">
 	@use '../lib/styles/variables' as *;
+
+	.logo-icon {
+		width: 2rem;
+		height: 2rem;
+		flex-shrink: 0;
+
+		// targets the raw SVG element injected by {@html}
+		:global(svg) {
+			width: 100%;
+			height: 100%;
+		}
+	}
 
 	// ──────────────────────────────────────────────────────
 	// APP SHELL
