@@ -40,6 +40,8 @@
 			e.name.toLowerCase().includes(q) ||
 			e.brief.toLowerCase().includes(q) ||
 			e.syntax.toLowerCase().includes(q) ||
+            e.example.toLowerCase().includes(q) ||
+            e.description.toLowerCase().includes(q) ||
 			(e.tags ?? []).some((t) => t.toLowerCase().includes(q));
 		return matchCat && matchSearch;
 	});
