@@ -29,11 +29,13 @@
 	let activeTab: 'quick' | 'detail' = 'quick';
 	let selectedCategory: string = 'all';
 	let searchQuery: string = '';
+	let scope: 'all' | 'maturita' | 'optional' = 'all';
 	let expandedId: string | null = null;
 
 	// ── Filtering ────────────────────────────────────────────
 	$: filtered = entries.filter((e) => {
 		const matchCat = selectedCategory === 'all' || e.category === selectedCategory;
+		const matchScope = inScope(e);
 		const q = searchQuery.toLowerCase();
 		const matchSearch =
 			!q ||
@@ -43,8 +45,12 @@
             e.example.toLowerCase().includes(q) ||
             e.description.toLowerCase().includes(q) ||
 			(e.tags ?? []).some((t) => t.toLowerCase().includes(q));
-		return matchCat && matchSearch;
+		return matchCat && matchScope && matchSearch;
 	});
+
+	function inScope(e: Entry): boolean {
+		return scope === 'all' || (scope === 'optional' ? !!e.optional : !e.optional);
+	}
 
 	function getCat(key: string): Category | undefined {
 		return categories.find((c) => c.key === key);
@@ -110,9 +116,11 @@
 		.filter((g) => g.items.length > 0);
 
 	// Category counts
+	$: scopedEntries = entries.filter(inScope);
 	$: catCounts = Object.fromEntries(
-		categories.map((c) => [c.key, entries.filter((e) => e.category === c.key).length])
+		categories.map((c) => [c.key, scopedEntries.filter((e) => e.category === c.key).length])
 	);
+	$: if (selectedCategory !== 'all' && !catCounts[selectedCategory]) selectedCategory = 'all';
 </script>
 
 <svelte:head>
@@ -200,6 +208,16 @@
 				{/if}
 			</div>
 
+			<div class="scope-toggle" role="group" aria-label="Rozsah">
+				<button class:active={scope === 'all'} on:click={() => (scope = 'all')}>Všetko</button>
+				<button class:active={scope === 'maturita'} on:click={() => (scope = 'maturita')}
+					>Na maturitu</button
+				>
+				<button class:active={scope === 'optional'} on:click={() => (scope = 'optional')}
+					>Nie na maturitu</button
+				>
+			</div>
+
 			<div class="cat-wrapper">
 				<button
 					class="scroll-arrow left"
@@ -218,9 +236,9 @@
 						class:active={selectedCategory === 'all'}
 						on:click={() => (selectedCategory = 'all')}
 					>
-						Všetky <span class="cat-count">{entries.length}</span>
+						Všetky <span class="cat-count">{scopedEntries.length}</span>
 					</button>
-					{#each categories as cat}
+					{#each categories.filter((c) => catCounts[c.key] > 0) as cat}
 						<button
 							class="cat-btn"
 							class:active={selectedCategory === cat.key}
@@ -260,6 +278,7 @@
 					on:click={() => {
 						searchQuery = '';
 						selectedCategory = 'all';
+						scope = 'all';
 					}}
 				>
 					Zrušiť filtre
@@ -272,7 +291,7 @@
 		{:else if activeTab === 'quick'}
 			<div class="result-count">
 				{filtered.length} príkazov
-				{#if searchQuery || selectedCategory !== 'all'}<span class="result-filter"
+				{#if searchQuery || selectedCategory !== 'all' || scope !== 'all'}<span class="result-filter"
 						>— filtrované</span
 					>{/if}
 			</div>
@@ -293,6 +312,7 @@
 							<div class="quick-card-top">
 								<span class="quick-cat-icon">{cat?.icon ?? '·'}</span>
 								<span class="quick-name">{entry.name}</span>
+								{#if entry.optional}<span class="optional-badge">nie na maturitu</span>{/if}
 								<span class="quick-chevron" class:flipped={expandedId === entry.id}>›</span>
 							</div>
 							<code class="quick-syntax">{entry.syntax}</code>
@@ -327,6 +347,7 @@
 								<article class="detail-card" style="--cat-accent: var(--{group.cat.color})">
 									<div class="detail-card-head">
 										<h3 class="detail-name">{entry.name}</h3>
+										{#if entry.optional}<span class="optional-badge">nie na maturitu</span>{/if}
 										{#if entry.tags}
 											<div class="tags">
 												{#each entry.tags as tag}
@@ -547,6 +568,29 @@
 		display: flex;
 		flex-direction: column;
 		gap: $space-3;
+	}
+
+	.scope-toggle {
+		display: flex;
+		gap: $space-1;
+		flex-wrap: wrap;
+
+		button {
+			font-family: $font-mono;
+			font-size: 0.8rem;
+			padding: $space-1 $space-3;
+			border-radius: $radius-md;
+			border: 1px solid var(--border);
+			background: var(--surface);
+			color: var(--text-muted);
+			cursor: pointer;
+
+			&.active {
+				background: var(--accent-blue);
+				border-color: var(--accent-blue);
+				color: #fff;
+			}
+		}
 	}
 
 	// Search
@@ -955,6 +999,17 @@
 		font-weight: 700;
 		color: var(--text);
 		letter-spacing: -0.01em;
+	}
+
+	.optional-badge {
+		font-family: $font-mono;
+		font-size: 0.68rem;
+		font-weight: 600;
+		white-space: nowrap;
+		color: var(--accent-red);
+		border: 1px solid var(--accent-red);
+		padding: 1px $space-2;
+		border-radius: $radius-sm;
 	}
 
 	.tags {

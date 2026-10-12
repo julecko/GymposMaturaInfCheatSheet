@@ -12,6 +12,7 @@ export type Entry = {
     example: string;     // Code example
     category: string;    // Category key
     tags?: string[];     // Optional extra tags
+    optional?: boolean;  // true = not needed for maturita
 };
 
 export type Category = {
@@ -37,6 +38,7 @@ export const categories: Category[] = [
     { key: 'files', label: 'Súbory', icon: '💾', color: 'accent-green' },
     { key: 'random', label: 'random', icon: '🎲', color: 'accent-purple' },
     { key: 'mathmod', label: 'math', icon: '√', color: 'accent-cyan' },
+    { key: 'matplotlib', label: 'matplotlib', icon: '📈', color: 'accent-blue' },
 ];
 
 // ============================================================
@@ -1247,6 +1249,24 @@ karty = ["A", "2", "3", "J", "Q", "K"]
 karta = random.choice(karty)`,
         category: 'random',
     },
+    {
+        id: 'random-shuffle',
+        name: 'random.shuffle',
+        syntax: 'random.shuffle(zoznam)',
+        brief: 'Náhodne premieša prvky zoznamu na mieste.',
+        description: 'Zamieša poradie prvkov zoznamu priamo (in-place) a nič nevracia (vráti None). Funguje len na meniteľné (mutable) sekvencie, napr. list — na tuple ani string nefunguje.',
+        example: `import random
+
+karty = ["A", "2", "3", "J", "Q", "K"]
+random.shuffle(karty)
+print(karty)   # napr. ["Q", "A", "3", "K", "2", "J"]
+
+# Premiešanie čísel
+cisla = list(range(1, 11))
+random.shuffle(cisla)
+print(cisla)`,
+        category: 'random',
+    },
 
     // ── MATH MODULE ──────────────────────────────────────
     {
@@ -1283,5 +1303,27 @@ print(math.pow(9, 0.5))  # 3.0  (odmocnina)
 print(2 ** 10)           # 1024  (int)
 print(math.pow(2, 10))   # 1024.0  (float)`,
         category: 'mathmod',
+    },
+
+    // ── MATPLOTLIB (nie je potrebné na maturitu) ────────────
+    {
+        id: 'mpl-plot',
+        name: 'matplotlib.pyplot',
+        syntax: 'plt.plot(x, y)',
+        brief: 'Nakreslí jednoduchý čiarový graf.',
+        description: 'Externá knižnica (pip install matplotlib). Na maturitu NIE JE potrebná — len pre zaujímavosť. plt.plot() vytvorí graf, plt.show() ho zobrazí v okne.',
+        example: `import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+y = [1, 4, 9, 16, 25]
+
+plt.plot(x, y)
+plt.title("Druhé mocniny")
+plt.xlabel("x")
+plt.ylabel("x na druhú")
+plt.show()`,
+        category: 'matplotlib',
+        tags: ['graf', 'plt'],
+        optional: true,
     },
 ];
