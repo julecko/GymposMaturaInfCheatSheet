@@ -1307,23 +1307,104 @@ print(math.pow(2, 10))   # 1024.0  (float)`,
 
     // ── MATPLOTLIB (nie je potrebné na maturitu) ────────────
     {
-        id: 'mpl-plot',
-        name: 'matplotlib.pyplot',
-        syntax: 'plt.plot(x, y)',
-        brief: 'Nakreslí jednoduchý čiarový graf.',
-        description: 'Externá knižnica (pip install matplotlib). Na maturitu NIE JE potrebná — len pre zaujímavosť. plt.plot() vytvorí graf, plt.show() ho zobrazí v okne.',
-        example: `import matplotlib.pyplot as plt
+        id: 'mpl-install',
+        name: 'Inštalácia a import',
+        syntax: 'import matplotlib.pyplot as plt',
+        brief: 'Nainštaluje knižnicu a importuje modul pyplot ako plt.',
+        description: 'Matplotlib je knižnica na tvorbu statických, animovaných a interaktívnych grafov. Na maturitu NIE JE potrebná. Nainštaluje sa cez pip; na školských PC pridaj --user. Bežne sa používa modul pyplot pod skratkou plt.',
+        example: `# v príkazovom riadku:
+# pip install matplotlib
+# pip install matplotlib --user   (na školských PC)
 
-x = [1, 2, 3, 4, 5]
-y = [1, 4, 9, 16, 25]
-
-plt.plot(x, y)
-plt.title("Druhé mocniny")
-plt.xlabel("x")
-plt.ylabel("x na druhú")
+import matplotlib.pyplot as plt`,
+        category: 'matplotlib',
+        tags: ['pip', 'import', 'plt'],
+        optional: true,
+    },
+    {
+        id: 'mpl-common',
+        name: 'Spoločné nastavenia grafu',
+        syntax: 'plt.title() / xlabel() / ylabel() / grid() / show()',
+        brief: 'Nadpis, popisy osí, mriežka a zobrazenie grafu.',
+        description: 'Každý graf by mal mať názov a popisy osí. plt.title("Názov") nastaví nadpis, plt.xlabel() a plt.ylabel() pomenujú osi, plt.grid(True) zapne mriežku na lepšie odčítanie hodnôt a plt.show() zobrazí graf v novom okne.',
+        example: `plt.title("Názov")
+plt.xlabel("Popis osi X")
+plt.ylabel("Popis osi Y")
+plt.grid(True)
 plt.show()`,
         category: 'matplotlib',
-        tags: ['graf', 'plt'],
+        tags: ['title', 'xlabel', 'ylabel', 'grid', 'show'],
+        optional: true,
+    },
+    {
+        id: 'mpl-plot',
+        name: 'Čiarový graf',
+        syntax: 'plt.plot(x, y, color=, linestyle=, marker=)',
+        brief: 'Zobrazí vývoj hodnôt (napr. v čase).',
+        description: 'Používa sa na vývoj hodnôt v čase (teploty, ceny akcií). Farbu meníme parametrom color (názov ako \'red\' alebo HEX kód ako \'#FF5733\'). Parametre linestyle a marker upravia vzhľad čiary a bodov.',
+        example: `import matplotlib.pyplot as plt
+
+dni = ['Po', 'Ut', 'St', 'Št', 'Pi']
+teploty = [12, 15, 14, 18, 16]
+
+# zelený čiarový graf s bodkami na hodnotách
+plt.plot(dni, teploty, color='green', linestyle='--', marker='o')
+plt.title('Vývoj teplôt cez týždeň')
+plt.show()`,
+        category: 'matplotlib',
+        tags: ['graf', 'plot', 'line'],
+        optional: true,
+    },
+    {
+        id: 'mpl-bar',
+        name: 'Stĺpcový graf',
+        syntax: 'plt.bar(kategorie, hodnoty, color=, edgecolor=)',
+        brief: 'Porovná hodnoty rôznych kategórií.',
+        description: 'Ideálny na porovnávanie kategórií (výdavky, počty žiakov v triedach). Parameter color určí farbu stĺpcov, edgecolor farbu ich okrajov.',
+        example: `import matplotlib.pyplot as plt
+
+kategorie = ['Jedlo', 'Zábava', 'Cestovanie']
+suma = [45, 30, 15]
+
+# nebesky modrý graf s tmavomodrým okrajom
+plt.bar(kategorie, suma, color='skyblue', edgecolor='darkblue')
+plt.title('Výdavky podľa kategórií')
+plt.show()`,
+        category: 'matplotlib',
+        tags: ['graf', 'bar', 'stĺpcový'],
+        optional: true,
+    },
+    {
+        id: 'mpl-pie',
+        name: 'Koláčový graf',
+        syntax: "plt.pie(podiely, labels=, colors=, autopct='%1.1f%%')",
+        brief: 'Zobrazí percentuálny podiel častí z celku.',
+        description: "Vhodný na štruktúru celku (napr. rozpočet). Parametru colors odovzdáme zoznam farieb, ktoré sa priradia kúskom v poradí. autopct='%1.1f%%' automaticky vypočíta a zobrazí percentá.",
+        example: `import matplotlib.pyplot as plt
+
+kategorie = ['Jedlo', 'Zábava', 'Cestovanie']
+podiely = [45, 30, 15]
+moje_farby = ['#ff9999', '#66b3ff', '#99ff99']
+
+plt.pie(podiely, labels=kategorie, colors=moje_farby, autopct='%1.1f%%')
+plt.title('Podiel výdavkov')
+plt.show()`,
+        category: 'matplotlib',
+        tags: ['graf', 'pie', 'koláčový'],
+        optional: true,
+    },
+    {
+        id: 'mpl-colors',
+        name: 'Farby v grafoch',
+        syntax: "color='red'  /  color='#FF0000'",
+        brief: 'Farbu zadáš názvom alebo HEX kódom.',
+        description: 'Pri prispôsobovaní dizajnu môžeš použiť textový názov farby alebo HEX kód. Pri koláčovom grafe sa používa zoznam farieb (colors=[...]). Najpoužívanejšie: red = #FF0000, skyblue = #87CEEB, orange = #FFA500, green = #008000.',
+        example: `plt.plot(x, y, color='red')          # red     #FF0000
+plt.bar(x, y, color='skyblue')       # skyblue #87CEEB
+plt.pie(p, colors=['orange', 'red']) # orange  #FFA500
+plt.plot(x, y, color='#008000')      # green   #008000`,
+        category: 'matplotlib',
+        tags: ['color', 'farba', 'hex'],
         optional: true,
     },
 ];

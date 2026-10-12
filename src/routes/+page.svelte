@@ -35,7 +35,7 @@
 	// ── Filtering ────────────────────────────────────────────
 	$: filtered = entries.filter((e) => {
 		const matchCat = selectedCategory === 'all' || e.category === selectedCategory;
-		const matchScope = inScope(e);
+		const matchScope = inScope(e, scope);
 		const q = searchQuery.toLowerCase();
 		const matchSearch =
 			!q ||
@@ -48,8 +48,8 @@
 		return matchCat && matchScope && matchSearch;
 	});
 
-	function inScope(e: Entry): boolean {
-		return scope === 'all' || (scope === 'optional' ? !!e.optional : !e.optional);
+	function inScope(e: Entry, sc: string): boolean {
+		return sc === 'all' || (sc === 'optional' ? !!e.optional : !e.optional);
 	}
 
 	function getCat(key: string): Category | undefined {
@@ -116,7 +116,7 @@
 		.filter((g) => g.items.length > 0);
 
 	// Category counts
-	$: scopedEntries = entries.filter(inScope);
+	$: scopedEntries = entries.filter((e) => inScope(e, scope));
 	$: catCounts = Object.fromEntries(
 		categories.map((c) => [c.key, scopedEntries.filter((e) => e.category === c.key).length])
 	);
